@@ -207,20 +207,19 @@ def random_code(dups):
             rnd.sample(range(10), LENGTH_OF_CODE)
 
 
-def game(code, dups):
+def game(code, dups, to_solve=False):
     guess = ''
     num_of_guesses = 0
     scores = []
     possibilities = []
     while guess != code:
-        suggestion = produce_number(possibilities)
         num_of_guesses += 1
         guess = ''
         while not guess.isdigit() or len(guess) != LENGTH_OF_CODE or (not dups and len(set(guess)) != LENGTH_OF_CODE):
-            print("".join([str(s) for s in suggestion]))
-            if len(suggestion) != 0:
+            suggestion = "".join([str(s) for s in produce_number(possibilities)])
+            print(suggestion)
+            if to_solve:
                 guess = suggestion
-                break
             else:
                 guess = input('Enter your guess:')
 
@@ -249,7 +248,7 @@ def main():
     dups = False
     guesses = []
     for _ in range(100):
-        guesses.append(game(random_code(dups), dups))
+        guesses.append(game(random_code(dups), dups, True))
         print(sum(guesses) / len(guesses))
         
 
